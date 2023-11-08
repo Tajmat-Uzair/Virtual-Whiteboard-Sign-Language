@@ -15,6 +15,7 @@ class handDetector():
         self.hands = self.mpHands.Hands(self.mode, self.maxHands,self.modelC,
                                         self.detectionCon,self.trackCon)
         self.mpDraw = mp.solutions.drawing_utils
+        self.tipIds = [4,8,12,16,20]
 
     def findHands(self, img, draw=True):
 
@@ -30,17 +31,48 @@ class handDetector():
       return img
     
     def findPosition(self,img,handNo = 0, draw = True):
-       lmList = []
+       self.lmList = []
        if self.results.multi_hand_landmarks:
            myHand = self.results.multi_hand_landmarks[handNo]
            for id, lm in enumerate(myHand.landmark):
                 # print(id, lm)
                h, w, c = img.shape
                cx, cy = int(lm.x * w), int(lm.y * h)
-               lmList.append([id,cx,cy])
+               self.lmList.append([id,cx,cy])
                if draw :
                   cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
-           return lmList
+           return self.lmList
+
+    def fingersUp(self):
+       fingers = []
+
+       #Thumb  
+       if self.lmList[self.tipIds[0]][1] > self.lmList[self.tipIds[0]-1][1]:
+          fingers.append(1)
+       else:
+          fingers.append(0)
+
+
+      #4. Fingers 
+       for id in range(1,5):
+          if self.lmList[self.tipIds[id]][2] < self.lmList[self.tipIds[id]-2][2]:
+            fingers.append(1) #open
+          else:
+            fingers.append(0) #closed
+       
+       return fingers
+
+       
+       
+
+
+
+
+
+
+
+
+
 def main():
 
     #from here {
