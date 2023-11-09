@@ -27,7 +27,6 @@ cap.set(3,1280)
 cap.set(4,720)
 
 detector = htm.handDetector(detectionCon=0.85)
-xp,yp = 0,0
 imgCanvas = np.zeros((720,1280,3),np.uint8) #to draw on the canvas
 
 while True:
@@ -56,12 +55,12 @@ while True:
 
        #4. Selection Mode- 2 fingers up
        if fingers[1] and fingers[2]:
-         
-          print("Selection Mode")
+         xp,yp = 0,0
+         print("Selection Mode")
 
           #condition check for click
 
-          if y1 < 125 : #in header?
+         if y1 < 125 : #in header?
              if 180<x1<400: 
                 header = overLayList[0] #pink ig
                 drawColor = (147,20,255)
@@ -78,7 +77,7 @@ while True:
                 header = overLayList[2] #eraser
                 drawColor = (0,0,0)
         
-          cv2.rectangle(img,(x1,y1-25),(x2,y2+25),drawColor,2) 
+         cv2.rectangle(img,(x1,y1-25),(x2,y2+25),drawColor,2) 
 
              
 
@@ -89,32 +88,29 @@ while True:
 
           if xp == 0 and yp == 0:
              xp, yp = x1, y1
-          if drawColor ==(0,0,0):
+
+          if drawColor ==(0,0,0): #erasing
              cv2.line(img,(xp,yp),(x1,y1),drawColor,eraserthickness)  
              cv2.line(imgCanvas,(xp,yp),(x1,y1),drawColor,eraserthickness)
-             
-          
-          
-          cv2.line(img,(xp,yp),(x1,y1),drawColor,brushthickness)  #for drawing
-          cv2.line(imgCanvas,(xp,yp),(x1,y1),drawColor,brushthickness)  #on canvas
+          else:
+             cv2.line(img,(xp,yp),(x1,y1),drawColor,brushthickness)  #for drawing
+             cv2.line(imgCanvas,(xp,yp),(x1,y1),drawColor,brushthickness)  #on canvas
 
 
           
           xp,yp = x1,y1
-
-
-
-
-    
-
-    
-
-
-
+    imgGray = cv2.cvtColor(imgCanvas,cv2.COLOR_BGR2GRAY) #will draw in black
+    _, imgInv = cv2.threshold(imgGray,50,255,cv2.THRESH_BINARY_INV) #to binary image
+    imgInv = cv2.cvtColor(imgInv,cv2.COLOR_GRAY2BGR)
+    img = cv2.bitwise_and(img, imgInv)
+    img = cv2.bitwise_or(img,imgCanvas)
 
 
 
     img[0:125,0:1280] = header #overlay the default header
+    
+    # img = cv2.addWeighted(img,0.5,imgCanvas,0.5,0) #to blend and draw on original image
+    
     cv2.imshow("Virtual Whiteboard",img)
     cv2.imshow("Canvas",imgCanvas)
     cv2.waitKey(1)
