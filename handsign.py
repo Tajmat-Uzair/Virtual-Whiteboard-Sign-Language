@@ -5,6 +5,7 @@ import numpy as np
 import math
 import time
 
+#HAND SIGN RECOGNITION
 
 cap = cv2.VideoCapture(0)
 detector = HandDetector(maxHands=1)
