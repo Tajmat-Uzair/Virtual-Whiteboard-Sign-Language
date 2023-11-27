@@ -3,6 +3,13 @@ import numpy as np
 import time
 import os
 import handtracking_module as htm
+from hand_recognition_module import HandRecognitionModule 
+import hand_recognition_module as hrm
+
+import subprocess
+from handsign import rec_sign_logic 
+
+import sign_language as slr
 
 #locating headers for ui
 folderPath = "Headers"
@@ -22,17 +29,18 @@ drawColor = (255,255,255)
 brushthickness = 15
 eraserthickness = 60
 
+
 cap = cv2.VideoCapture(0)
 cap.set(3,1280)
 cap.set(4,720)
 
 detector = htm.handDetector(detectionCon=0.85)
 imgCanvas = np.zeros((720,1280,3),np.uint8) #to draw on the canvas
+ob = slr.SignRecognizer
 
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)
-
 
     #2. Find Hand Landmarks 
     img = detector.findHands(img)
@@ -71,8 +79,10 @@ while True:
                 header = overLayList[3] #green
                 drawColor = (0,255,0)
              elif  850 < x1 < 1000 : 
-                header = overLayList[4] #sign
-                drawColor = (255,255,255)
+                cap.release()
+                sign = rec_sign_logic()
+                cap = cv2.VideoCapture(0)
+                #subprocess.run(["python","handsign.py"])
              elif 1030 <x1 < 1069 :
                 header = overLayList[2] #eraser
                 drawColor = (0,0,0)
