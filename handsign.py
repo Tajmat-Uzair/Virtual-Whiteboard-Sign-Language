@@ -1,3 +1,7 @@
+
+
+
+
 import cv2 
 from cvzone.HandTrackingModule import HandDetector
 from cvzone.ClassificationModule import Classifier
@@ -7,24 +11,26 @@ import time
 
 #HAND SIGN RECOGNITION
 
-cap = cv2.VideoCapture(0)
-detector = HandDetector(maxHands=1)
-classifier = Classifier("Model/keras_model.h5","Model/labels.txt")
 
-offset = 20 #to give extra space while cropping
-imgSize = 300 #to solve the dimension pblm while cropping
-folder = "data/C"
-counter = 0
+def rec_sign_logic():
+  cap = cv2.VideoCapture(0)
+  detector = HandDetector(maxHands=1)
+  classifier = Classifier("Model/keras_model.h5","Model/labels.txt")
 
-labels = ["A","B","C"]
+  offset = 20 #to give extra space while cropping
+  imgSize = 300 #to solve the dimension pblm while cropping
+  folder = "data/C"
+  counter = 0
 
-while True:
-    success,img = cap.read()
-    img = cv2.flip(img, 1)
-    imgOutput = img.copy()
-    hands,img = detector.findHands(img)
+  labels = ["A","B","C"]
 
-    if hands: 
+  while True:
+      success,img = cap.read()
+      img = cv2.flip(img, 1)
+      imgOutput = img.copy()
+      hands,img = detector.findHands(img)
+
+      if hands: 
         hand = hands[0] #because only one hand
         x,y,w,h = hand['bbox']
 
@@ -68,8 +74,12 @@ while True:
         cv2.imshow("Image White", imgWhite)
 
 
-    cv2.imshow("Image", imgOutput)
+      cv2.imshow("Image", imgOutput)
 
-    cv2.waitKey(1) 
+      key = cv2.waitKey(1) & 0xFF 
+      if key == ord('q'):
+         break
+
+rec_sign_logic()
  
 

@@ -18,6 +18,7 @@ class HandRecognitionModule:
     
     def recognize_signs(self):
         while True:
+          
           success,img = self.cap.read()
           img = cv2.flip(img, 1)
           imgOutput = img.copy()
@@ -32,6 +33,7 @@ class HandRecognitionModule:
             imgCrop = img[y-self.offset:y+h+self.offset, x-self.offset:x+w+self.offset] #dimensions
             imgCropShape = imgCrop.shape
             aspectratio = h/w 
+           
             if aspectratio>1:
                 k = self.imgSize/h #stretching height k is constant
                 wCal = math.ceil(k*w)
@@ -56,7 +58,6 @@ class HandRecognitionModule:
           cv2.rectangle(imgOutput,(x-self.offset,y-self.offset),(x+w+self.offset,y+h+self.offset),(255,0,255),4)
 
 
-
              
 
           cv2.imshow("Cropped Image", imgCrop)
@@ -69,3 +70,9 @@ class HandRecognitionModule:
 
 
         #add the main method yet
+def main():
+    ob = HandRecognitionModule()
+    sign = ob.recognize_signs()
+
+if __name__=="__main__":
+    main()

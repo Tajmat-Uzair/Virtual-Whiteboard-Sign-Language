@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import time
+#from hand_recognition_module import HandRecognitionModule
 
 
 class handDetector():
@@ -62,16 +63,6 @@ class handDetector():
        
        return fingers
 
-       
-       
-
-
-
-
-
-
-
-
 
 def main():
 
@@ -79,8 +70,8 @@ def main():
     pTime = 0
     cTime = 0
     cap = cv2.VideoCapture(0)
-
     detector = handDetector()
+
 
     while True:
       success, img = cap.read()
@@ -97,22 +88,13 @@ def main():
 
       cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_ITALIC, 3, (255, 0, 255), 3)
 
-      cv2.imshow("Image", img)
+      cv2.imshow("Hand Tracking", img)
       cv2.waitKey(1)
 
 
       #till here -- use as module }
 
-
-
-
-
-
-
-
-
-
-
-
 if __name__== "__main__":
     main()
+
+

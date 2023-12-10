@@ -10,7 +10,7 @@ import subprocess
 from handsign import rec_sign_logic 
 
 import sign_language as slr
-
+#SAVE AND ACCURACY
 #locating headers for ui
 folderPath = "Headers"
 myList = os.listdir(folderPath)
@@ -36,7 +36,7 @@ cap.set(4,720)
 
 detector = htm.handDetector(detectionCon=0.85)
 imgCanvas = np.zeros((720,1280,3),np.uint8) #to draw on the canvas
-ob = slr.SignRecognizer
+#ob = slr.SignRecognizer
 
 while True:
     success, img = cap.read()
@@ -79,6 +79,7 @@ while True:
                 header = overLayList[3] #green
                 drawColor = (0,255,0)
              elif  850 < x1 < 1000 : 
+                print("kj")
                 cap.release()
                 sign = rec_sign_logic()
                 cap = cv2.VideoCapture(0)
