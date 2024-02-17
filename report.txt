@@ -1,4 +1,0 @@
-Need to display results correctly in sign language
-Gives wrong prediction 
-Exit Gesture
-Integrate esp32 cam and Ftdi https://youtu.be/wa2ARoUUdU8?t=3060  

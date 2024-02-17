@@ -32,7 +32,7 @@ eraserthickness = 60
 xp,yp= 0,0
 
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 cap.set(3,1280)
 cap.set(4,720)
 
@@ -81,8 +81,8 @@ while True:
                 header = overLayList[3] #green
                 drawColor = (0,255,0)
              elif  850 < x1 < 1000 : 
-                cap.release()
-                subprocess.run(["python","handsign.py"])
+               #  cap.release()
+               #  subprocess.run(["python","handsign.py"])
                 cap = cv2.VideoCapture(0)
              elif 1030 <x1 < 1069 :
                 header = overLayList[2] #eraser
